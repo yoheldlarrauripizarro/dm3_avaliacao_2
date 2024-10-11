@@ -17,6 +17,7 @@ class _MovieListScreenState extends State<MovieListScreen> {
     _fetchMovies();
   }
 
+  // Fetch movies from Firebase
   Future<void> _fetchMovies() async {
     final movies = await DatabaseHelper().getMovies();
     setState(() {
@@ -24,34 +25,43 @@ class _MovieListScreenState extends State<MovieListScreen> {
     });
   }
 
-  // Função para gerar as estrelas com base na pontuação
-  Widget _buildRatingStars(int rating) {
+  // Function to generate star icons based on the rating
+  Widget _buildRatingStars(int? rating) {
+    int effectiveRating = rating ?? 0; // Use 0 stars if rating is null
+
     List<Widget> stars = [];
     for (int i = 0; i < 10; i++) {
-      if (i < rating) {
+      if (i < effectiveRating) {
         stars.add(Icon(Icons.star, color: Colors.yellow));
       } else {
         stars.add(Icon(Icons.star_border, color: Colors.yellow));
       }
     }
-    return Row(children: stars);
+    return Row(
+      children: stars,
+      mainAxisSize: MainAxisSize.min, // So that stars don't stretch horizontally
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Movie List')),
-      body: ListView.builder(
+      body: _movies.isEmpty
+          ? Center(child: Text('No movies added yet'))
+          : ListView.builder(
         itemCount: _movies.length,
         itemBuilder: (context, index) {
           return Card(
             margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: ListTile(
-              title: Text(_movies[index]['name'], style: TextStyle(fontWeight: FontWeight.bold)),
+              title: Text(
+                _movies[index]['name'],
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Exibe as estrelas de acordo com a pontuação
                   _buildRatingStars(_movies[index]['rating']),
                   Text('Description: ${_movies[index]['description']}'),
                   Text('Date: ${_movies[index]['date']}', style: TextStyle(color: Colors.grey)),
@@ -61,7 +71,7 @@ class _MovieListScreenState extends State<MovieListScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MovieDetailScreen(movie: _movies[index]),
+                    builder: (context) => MovieDetailScreen(movie: _movies[index], movieId: _movies[index]['id']),
                   ),
                 ).then((_) => _fetchMovies());
               },

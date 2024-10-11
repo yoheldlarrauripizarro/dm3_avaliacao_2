@@ -1,41 +1,31 @@
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class DatabaseHelper {
-  static final DatabaseHelper _instance = DatabaseHelper._internal();
-  factory DatabaseHelper() => _instance;
-  DatabaseHelper._internal();
+  final DatabaseReference _moviesRef = FirebaseDatabase.instance.ref().child('movies');
 
-  static Database? _database;
-
-  Future<Database> get database async {
-    if (_database != null) return _database!;
-    _database = await _initDatabase();
-    return _database!;
-  }
-
-  Future<Database> _initDatabase() async {
-    String path = join(await getDatabasesPath(), 'movies.db');
-    return await openDatabase(path, onCreate: (db, version) {
-      return db.execute(
-        'CREATE TABLE movies(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, category TEXT, description TEXT, rating INTEGER, release_year INTEGER, date TEXT)',
-      );
-    }, version: 1);
-  }
-
+  // Insert movie into Firebase
   Future<void> insertMovie(Map<String, dynamic> movie) async {
-    final db = await database;
-    movie['date'] = DateTime.now().toIso8601String(); // Obtém a data e hora atual
-    await db.insert('movies', movie);
+    await _moviesRef.push().set(movie);
   }
 
+  // Fetch movies from Firebase
   Future<List<Map<String, dynamic>>> getMovies() async {
-    final db = await database;
-    return await db.query('movies');
+    final snapshot = await _moviesRef.get();
+    if (snapshot.exists) {
+      Map<dynamic, dynamic> moviesMap = snapshot.value as Map<dynamic, dynamic>;
+      List<Map<String, dynamic>> moviesList = moviesMap.entries.map((entry) {
+        final movie = Map<String, dynamic>.from(entry.value as Map);
+        movie['id'] = entry.key;  // Add Firebase key as 'id'
+        return movie;
+      }).toList();
+      return moviesList;
+    } else {
+      return [];
+    }
   }
 
-  Future<void> deleteMovie(int id) async {
-    final db = await database;
-    await db.delete('movies', where: 'id = ?', whereArgs: [id]);
+  // Delete movie from Firebase
+  Future<void> deleteMovie(String movieId) async {
+    await _moviesRef.child(movieId).remove();
   }
 }

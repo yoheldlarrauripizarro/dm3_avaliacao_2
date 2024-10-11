@@ -36,7 +36,7 @@ class _AddMovieScreenState extends State<AddMovieScreen> {
       return;
     }
 
-    // Adiciona o filme ao banco de dados
+    // Add movie to Firebase
     DatabaseHelper().insertMovie({
       'name': name,
       'category': category,

@@ -1,5 +1,5 @@
-name: dm3_avaliacao_1
-description: "Avaliacao 1 do Curso dm3"
+name: dm3_avaliacao_2
+description: "Avaliacao 2 do Curso dm3"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -30,7 +30,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  sqflite: ^2.0.0+4  # Para usar o SQLite
   path: ^1.8.3       # Para lidar com caminhos de arquivos no SQLite
   provider: ^6.0.5   # Caso precise de gerenciamento de estado
 
@@ -38,6 +37,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   firebase_core: ^2.27.0
+  firebase_database: any
 
 dev_dependencies:
   flutter_test:
