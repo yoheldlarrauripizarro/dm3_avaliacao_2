@@ -1,6 +1,6 @@
-# dm3_avaliacao_1
+# dm3_avaliacao_2
 
-Avaliacao 1 do Curso dm3
+Avaliacao 2 do Curso dm3
 
 ## Getting Started
 
