@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "81436059822",
+    "project_id": "dm3-avaliacao2",
+    "storage_bucket": "dm3-avaliacao2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:81436059822:android:20878aa85c7571aad3a53f",
+        "android_client_info": {
+          "package_name": "br.edu.ifsp.scl.avaliacao.dm3_avaliacao_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUDFoLAQR8_ZRDD3pYuHD7LyI2Y3-FLeo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
